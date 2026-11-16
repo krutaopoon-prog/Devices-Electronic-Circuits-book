@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 4 ทรานซิสเตอร์แบบ BJT</title>
+<meta name="description" content="สไลด์ประกอบการสอนตามหนังสือเรียนวิชาอุปกรณ์อิเล็กทรอนิกส์และวงจร (20127-2004) บทเรียนที่ 4 ทรานซิสเตอร์แบบ BJT ระดับ ปวช.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@400;700&family=Prompt:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/theme.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+<link rel="stylesheet" href="../assets/css/sims.css">
+<link rel="stylesheet" href="bjt.css">
+<style>
+    h2.title { font-size: 58px; margin-bottom: 20px; padding-right: 330px; }
+    .bk { position: absolute; right: 0; top: 0; font: 500 28px var(--font-display); color: #fff; background: var(--sec); border-radius: 999px; padding: 6px 22px; }
+    .fig { background: #fff; border: 3px solid var(--line); border-radius: 24px; padding: 14px 22px; }
+    .fig p.cap { font-size: 26px; line-height: 1.35; margin: 6px 0 0; color: var(--ink-soft); text-align: center; }
+    .split { display: grid; grid-template-columns: 820px 1fr; gap: 44px; align-items: start; }
+    .side { display: flex; flex-direction: column; gap: 16px; font-size: 34px; line-height: 1.4; }
+    .side p { margin: 0; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .four { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    table.plan td, table.plan th { font-size: 28px; padding: 7px 18px; }
+    table.plan td:first-child { font-family: var(--font-mono); white-space: nowrap; }
+    table.t.cmp td, table.t.cmp th { font-size: 32px; padding: 12px 20px; vertical-align: top; line-height: 1.35; }
+    table.t.cmp td:first-child { font-family: var(--font-display); font-weight: 500; }
+    ol.steps > li { margin-bottom: 20px; font-size: 40px; line-height: 1.35; }
+    ol.steps.sm > li { margin-bottom: 12px; font-size: 33px; }
+    ol.steps.xs > li { margin-bottom: 6px; font-size: 29px; }
+    .ans { font: 500 36px var(--font-mono); color: var(--teal); background: var(--teal-soft); border-radius: 16px; padding: 8px 20px; line-height: 1.5; }
+    .warn { font-size: 32px; line-height: 1.4; background: var(--rose-soft); border-left: 8px solid var(--rose); border-radius: 0 18px 18px 0; padding: 12px 24px; }
+    .tipbox { font-size: 30px; line-height: 1.4; background: var(--sun-soft); border-left: 8px solid var(--sun); border-radius: 0 18px 18px 0; padding: 10px 22px; }
+    .errata { font-size: 26px; line-height: 1.4; background: #fff; border: 2px dashed var(--rose); border-radius: 16px; padding: 8px 18px; color: var(--ink-soft); }
+    .errata b { color: var(--rose); }
+    .note-line { font-size: 28px; line-height: 1.4; color: var(--ink-soft); margin: 0; }
+    .fml { font: 500 64px var(--font-mono); color: var(--teal); background: #fff; border: 3px solid var(--teal); border-radius: 22px; padding: 10px 40px; display: inline-block; }
+    .fml.sm { font-size: 46px; padding: 6px 28px; }
+    .labframe { position: relative; width: 100%; height: 760px; border: 3px solid var(--line); border-radius: 22px; overflow: hidden; background: #c9d3c5; }
+    .labframe iframe { position: absolute; left: 0; top: 0; width: calc(100% / 1.35); height: calc(100% / 1.35); transform: scale(1.35); transform-origin: 0 0; border: 0; background: #c9d3c5; }
+    .lablink { position: absolute; right: 0; top: 6px; font: 500 28px var(--font-display); color: var(--teal); text-decoration: none; border: 3px solid var(--teal); border-radius: 999px; padding: 2px 22px; background: #fff; }
+    .slide.lab .bk { right: 250px; }
+    .act-badge.lb { background: var(--teal); }
+    .qmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+    .qmap .box { padding: 22px 26px; }
+    .qmap h3 { margin: 0 0 6px; font: 600 38px var(--font-display); color: var(--sec); }
+    .qmap .q { font: 500 34px var(--font-display); margin: 0 0 12px; line-height: 1.3; }
+    .qmap ul { margin: 0; padding-left: 30px; font-size: 28px; line-height: 1.45; }
+    .qmap .pg { font-size: 24px; color: var(--ink-soft); margin-top: 10px; }
+    .flow { display: flex; gap: 18px; align-items: center; justify-content: center; margin-top: 30px; font: 500 34px var(--font-display); }
+    .flow span { background: #fff; border: 3px solid var(--line); border-radius: 999px; padding: 6px 28px; }
+    .flow i { font-style: normal; color: var(--ink-soft); }
+    .symc { text-align: center; font: 500 32px var(--font-display); }
+    .symc .bj-sym { max-width: 300px; margin: 0 auto 6px; }
+    .pkgs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; text-align: center; }
+    .pkgs .bj-pkg { max-width: 240px; margin: 0 auto; }
+    .pkgs p { font-size: 28px; margin: 8px 0 0; line-height: 1.3; }
+    .mt4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .mt4 .fig { padding: 8px 10px; text-align: center; }
+    .mt4 .bj-mtest { max-width: 300px; margin: 0 auto; }
+    .mt4 .cap { font-size: 24px !important; }
+    .up { color: var(--teal); font-weight: 700; }
+    .no { color: var(--rose); font-weight: 700; }
+    table.t.rd td, table.t.rd th { font-size: 30px; padding: 9px 18px; }
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .grid4 .box { padding: 18px 22px; font-size: 30px; line-height: 1.35; }
+    .grid4 .box b { display: block; font: 600 34px var(--font-mono); color: var(--sec); }
+    .grid4 .box span { display: block; font-size: 22px; color: var(--ink-soft); }
+    .vote .why { font-size: 28px; }
+    .vote.syms .opt { display: flex; align-items: center; gap: 20px; }
+    .slide .bj-graph { max-height: 720px; }
+    .cfig .bj-svg { max-height: 640px; }
+</style>
+</head>
+<body>
+<!--
+  วิธีใช้: ← → / Space เลื่อนสไลด์และแสดงทีละขั้น · T สารบัญ · F เต็มจอ
+  เรียงตามหนังสือเรียน บทเรียนที่ 4 (หน้า 37–46) ป้ายมุมขวาบนบอกหน้าหนังสือที่ให้นักเรียนเปิดตาม
+  ภาพทั้งหมดวาดจาก ch04/bjt.js · แล็บเสมือน ch04/lab.html
+-->
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage" data-head="บทที่ 4 ทรานซิสเตอร์แบบ BJT" data-foot="">
+
+<!-- ============ เปิดบทเรียน ============ -->
+<section class="slide cover" data-title="ปก: บทที่ 4">
+  <div class="body center" style="top:0;bottom:0;right:720px">
+    <div class="chapter reveal d1">บทเรียนที่ 4 · หนังสือหน้า 37–46</div>
+    <h1 class="reveal d2" style="font-size:110px">ทรานซิสเตอร์<br>แบบ BJT</h1>
+    <div class="sub reveal d3">วิชาอุปกรณ์อิเล็กทรอนิกส์และวงจร (20127-2004) · ระดับ ปวช.</div>
+    <div class="tiny reveal d4" style="margin-top:40px">เรียงตามหนังสือเรียนที่วิทยาลัยจัดให้ เปิดหนังสือตามเลขหน้ามุมขวาบนของแต่ละสไลด์</div>
+  </div>
+  <div class="reveal d3" style="position:absolute;right:170px;top:170px;width:470px"><span data-bjt="sym" data-type="npn"></span></div>
+</section>
+
+<section class="slide sec-0" data-tag="แผนการเรียนวันนี้" data-title="แผนการเรียน 4 ชั่วโมง">
+  <div class="body" style="top:112px">
+    <h2 class="title reveal">แผนวันนี้ ทฤษฎี 1 ชั่วโมงครึ่ง ปฏิบัติ 2 ชั่วโมงครึ่ง</h2>
+    <table class="t left plan reveal d1" style="width:100%">
+      <tr><th>เวลา</th><th>ช่วง</th><th>นักเรียนทำอะไร</th></tr>
+      <tr><td>0:00–0:10</td><td>เปิดเรื่อง</td><td>สวิตช์ที่ไม่ต้องใช้มือกด</td></tr>
+      <tr><td>0:10–0:20</td><td>แบบทดสอบก่อนเรียน</td><td>10 ข้อจากหนังสือหน้า 45–46</td></tr>
+      <tr><td>0:20–0:40</td><td>4.1 โครงสร้างและสัญลักษณ์</td><td>วาดสัญลักษณ์ · โหวตทายชนิด</td></tr>
+      <tr><td>0:40–1:15</td><td>4.2 คุณสมบัติทางไฟฟ้า</td><td>ลากกราฟ · คำนวณ β · ทายช่วงการทำงาน</td></tr>
+      <tr><td>1:15–1:25</td><td>พัก</td><td></td></tr>
+      <tr><td>1:25–1:45</td><td>4.3 การไบแอส</td><td>สลับขั้วแหล่งจ่ายในตัวจำลอง</td></tr>
+      <tr><td>1:45–2:30</td><td>4.4 การวัดทรานซิสเตอร์</td><td>ฝึกในแล็บเสมือน 5 ภารกิจ</td></tr>
+      <tr><td>2:30–3:30</td><td>ลงมือวัดตัวจริง</td><td>หาขา ชนิด และสภาพ บันทึกในใบบันทึกผล</td></tr>
+      <tr><td>3:30–4:00</td><td>สรุป + หลังเรียน</td><td>สรุปบท · ทำ 10 ข้อ</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="slide sec-0 act" data-tag="เปิดเรื่อง" data-title="สวิตช์ที่ไม่ต้องใช้มือกด">
+  <div class="body">
+    <div><span class="act-badge">คิด-คู่-แชร์</span><span class="act-meta">คุยกับเพื่อนข้าง ๆ 3 นาที</span></div>
+    <h2 class="title">ไฟถนนติดเองตอนมืด ใครเป็นคนกดสวิตช์</h2>
+    <div class="split" style="grid-template-columns:1fr 520px">
+      <div class="side">
+        <div class="qbox"><h3>คุยกันว่า</h3><ol>
+          <li>เซนเซอร์แสงให้กระแสออกมานิดเดียว พอจะเปิดหลอดไฟใหญ่ได้ไหม</li>
+          <li>ถ้าไม่พอ ต้องมีอุปกรณ์อะไรมาช่วย</li>
+        </ol></div>
+        <p class="frag tipbox">อุปกรณ์ที่ใช้<b>กระแสน้อย ๆ ควบคุมกระแสมาก ๆ</b> ได้ คือ <b>ทรานซิสเตอร์</b> ทำหน้าที่ได้ทั้งเป็นสวิตช์และขยายสัญญาณ</p>
+      </div>
+      <div class="side" style="align-items:center"><div data-timer="180"></div></div>
+    </div>
+    <div class="src">ที่มา: ครูตั้งคำถามนำเข้าสู่บทเรียน · ภาพปกบทหนังสือหน้า 37 มีทรานซิสเตอร์หลายแบบและแผงวงจรควบคุม</div>
+  </div>
+</section>
+
+<section class="slide sec-0 act" data-title="แบบทดสอบก่อนเรียน">
+  <div class="body center" style="text-align:center">
+    <div><span class="act-badge">แบบทดสอบก่อนเรียน</span><span class="act-meta">รายบุคคล · 10 นาที</span></div>
+    <h2 class="title" style="padding-right:0">10 ข้อจากหนังสือ ยังไม่รู้ก็ตอบตามที่คิด</h2>
+    <p>เปิด <b>แบบทดสอบ</b> เลือก "<b>ก่อนเรียน</b>" ทำ 10 ข้อ แล้วกดส่ง</p>
+    <p class="small"><a href="quiz.html">quiz.html</a> · ข้อเดียวกับแบบทดสอบหลังเรียนบทเรียนที่ 4 หน้า 45–46 (ยังไม่ต้องเขียนลงหนังสือ)</p>
+    <div style="margin-top:20px"><div data-timer="600"></div></div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-tag="เป้าหมาย" data-title="บทนี้เรียนอะไรบ้าง">
+  <div class="body">
+    <h2 class="title reveal">บทนี้มี 4 หัวข้อ</h2><div class="bk">หน้า 38</div>
+    <div class="grid4 reveal d1">
+      <div class="box"><b>4.1</b>โครงสร้างและสัญลักษณ์<span>หน้า 39–40</span></div>
+      <div class="box"><b>4.2</b>คุณสมบัติทางไฟฟ้า<span>หน้า 40–42</span></div>
+      <div class="box"><b>4.3</b>การไบแอส<span>หน้า 41–42</span></div>
+      <div class="box"><b>4.4</b>การวัดทรานซิสเตอร์<span>หน้า 42–44</span></div>
+    </div>
+    <p class="reveal d2 note-line" style="margin-top:26px">สมรรถนะย่อย: แสดงความรู้เรื่อง <b>โครงสร้าง</b> · <b>การวัด</b> · <b>การไบแอส</b> ทรานซิสเตอร์แบบ BJT</p>
+    <p class="reveal d3 note-line" style="margin-top:10px">ผลลัพธ์การเรียนรู้: ใช้ความรู้และทักษะเรื่อง BJT วัดตรวจเช็คทรานซิสเตอร์ได้ ละเอียด รอบคอบ ถูกต้อง และปลอดภัย</p>
+    <div class="src">ที่มา: หนังสือหน้า 38 หัวข้อเรื่อง สมรรถนะย่อย และผลลัพธ์การเรียนรู้</div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="จุดประสงค์การเรียนรู้">
+  <div class="body">
+    <h2 class="title reveal">จบบทนี้ นักเรียนต้องทำได้</h2><div class="bk">หน้า 38</div>
+    <ol class="steps sm reveal d1">
+      <li>อธิบายการทำงานของทรานซิสเตอร์แบบ BJT ได้</li>
+      <li>เขียนสัญลักษณ์และโครงสร้างของทรานซิสเตอร์แบบ BJT ได้</li>
+      <li>วัดเพื่อตรวจเช็คทรานซิสเตอร์ได้</li>
+      <li>มีเจตคติและกิจนิสัยที่ดี ปฏิบัติงานละเอียด รอบคอบ ปลอดภัย</li>
+    </ol>
+    <p class="errata reveal d2" style="margin-top:16px"><b>หนังสือพิมพ์ผิด:</b> หน้า 38 จุดประสงค์ข้อ 3 และผลลัพธ์การเรียนรู้เขียนว่า "ตรวจเช็ค<b>ไดโอด</b>ชนิดต่าง ๆ" บทนี้เรียนเรื่องทรานซิสเตอร์ จึงควรเป็น "ตรวจเช็ค<b>ทรานซิสเตอร์</b>"</p>
+    <div class="src">ที่มา: หนังสือหน้า 38 จุดประสงค์เชิงพฤติกรรม</div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-tag="แผนที่บท" data-title="แผนที่บท: 3 คำถาม">
+  <div class="body">
+    <h2 class="title reveal">4 หัวข้อในหนังสือ ตอบ 3 คำถามนี้</h2><div class="bk">หน้า 38</div>
+    <div class="qmap">
+      <div class="box reveal d1"><h3>คำถามที่ 1</h3><p class="q">ทรานซิสเตอร์หน้าตาเป็นยังไง</p>
+        <ul><li>4.1 โครงสร้าง NPN PNP</li><li>ขา E B C</li><li>สัญลักษณ์</li></ul><p class="pg">หนังสือหน้า 39–40</p></div>
+      <div class="box reveal d2"><h3>คำถามที่ 2</h3><p class="q">ทำงานยังไง</p>
+        <ul><li>4.2 กระแส I<sub>B</sub> คุม I<sub>C</sub> และ β</li><li>ช่วงการทำงาน 3 ช่วง</li><li>4.3 การไบแอส</li></ul><p class="pg">หนังสือหน้า 40–42</p></div>
+      <div class="box reveal d3"><h3>คำถามที่ 3</h3><p class="q">วัดยังไงว่าขาไหน ดีหรือเสีย</p>
+        <ul><li>4.4 หาขาเบสและชนิด</li><li>หาขา E และ C</li><li>ตัวดี ตัวขาด ตัวช็อต</li></ul><p class="pg">หนังสือหน้า 42–44</p></div>
+    </div>
+    <div class="flow frag"><span>อ่านในหนังสือ</span><i>→</i><span>ลองในแล็บเสมือน</span><i>→</i><span>วัดตัวจริง</span></div>
+    <div class="src">ที่มา: หนังสือหน้า 38 หัวข้อเรื่อง · การจัดกลุ่มเป็น 3 คำถามครูทำเพิ่มเพื่อให้เห็นภาพรวม</div>
+  </div>
+</section>
+
+<!-- ============ 4.1 ============ -->
+<section class="slide section sec-1" data-tag="4.1 โครงสร้างและสัญลักษณ์" data-title="4.1 โครงสร้างและสัญลักษณ์">
+  <div class="big-no">4.1</div>
+  <div class="body center">
+    <div class="label reveal">คำถามที่ 1 · หัวข้อที่ 4.1 · หนังสือหน้า 39</div>
+    <h2 class="reveal d1">โครงสร้างและสัญลักษณ์ของทรานซิสเตอร์แบบ BJT</h2>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="BJT คืออะไร">
+  <div class="body">
+    <h2 class="title reveal">BJT = Bipolar Junction Transistor</h2><div class="bk">หน้า 39</div>
+    <div class="split" style="grid-template-columns:620px 1fr">
+      <div class="fig reveal d1"><span data-bjt="block" data-type="npn" data-names="1"></span><p class="cap">สาร P กับสาร N มาต่อกัน 3 ชั้น</p></div>
+      <div class="side">
+        <p class="frag">เป็นอุปกรณ์สารกึ่งตัวนำ ทำจาก<b>สาร P</b> และ<b>สาร N</b> ต่อกัน</p>
+        <p class="frag">มีรอยต่อ PN <b>สองรอย</b> จึงเรียกว่า "อุปกรณ์สองรอยต่อ"</p>
+        <p class="frag">นิยมใช้<b>ซิลิคอน (Si)</b> มากกว่าเจอร์เมเนียม เพราะทนกระแสและกำลังไฟได้สูงกว่า ใช้กับความถี่สูงได้ดี</p>
+        <p class="frag tipbox">ไดโอดมีรอยต่อ 1 รอย · ทรานซิสเตอร์มี 2 รอย เหมือนไดโอด 2 ตัวหันหลังชนกัน</p>
+      </div>
+    </div>
+    <div class="src">ที่มา: หนังสือหน้า 39 · การเทียบกับไดโอด 2 ตัวครูเพิ่มเพื่อเชื่อมกับบทที่เรียนเรื่องไดโอด</div>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="2 ชนิด: NPN และ PNP">
+  <div class="body">
+    <h2 class="title reveal">แบ่งตามโครงสร้างได้ 2 ชนิด</h2><div class="bk">หน้า 39–40</div>
+    <div class="two">
+      <div class="fig reveal d1"><h3 style="margin:0 0 6px;font-size:40px;color:var(--blue)">ชนิด NPN</h3><span data-bjt="block" data-type="npn"></span><p class="cap">รูปที่ 4.1 (ก) สาร <b>P อยู่ตรงกลาง</b> N อยู่สองข้าง</p></div>
+      <div class="fig reveal d2"><h3 style="margin:0 0 6px;font-size:40px;color:var(--rose)">ชนิด PNP</h3><span data-bjt="block" data-type="pnp"></span><p class="cap">รูปที่ 4.1 (ค) สาร <b>N อยู่ตรงกลาง</b> P อยู่สองข้าง</p></div>
+    </div>
+    <p class="frag tipbox" style="margin-top:24px">จำง่าย ๆ: <b>ตัวอักษรตรงกลางของชื่อ</b> = สารของขาเบส · N<b>P</b>N เบสเป็น P · P<b>N</b>P เบสเป็น N</p>
+    <div class="src">ที่มา: หนังสือหน้า 39–40 รูปที่ 4.1 (วาดใหม่) · วิธีจำครูเพิ่ม</div>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="ขา E B C">
+  <div class="body">
+    <h2 class="title reveal">มีขาใช้งาน 3 ขา</h2><div class="bk">หน้า 39–40</div>
+    <table class="t cmp reveal d1" style="width:100%">
+      <tr><th>ขา</th><th>ชื่อ</th><th>อยู่ตรงไหน (NPN)</th><th>นึกภาพง่าย ๆ</th></tr>
+      <tr><td>E</td><td>อิมิตเตอร์ (Emitter)</td><td>สาร N ข้างหนึ่ง ขาที่มีลูกศร</td><td>ผู้<b>ปล่อย</b>พาหะออกมา</td></tr>
+      <tr><td>B</td><td>เบส (Base)</td><td>สาร P ตรงกลาง (บางมาก)</td><td><b>ประตู</b>ที่คุมว่าจะให้ผ่านเท่าไร</td></tr>
+      <tr><td>C</td><td>คอลเลกเตอร์ (Collector)</td><td>สาร N อีกข้าง</td><td>ผู้<b>รับ</b>พาหะเข้ามา</td></tr>
+    </table>
+    <p class="frag note-line" style="margin-top:20px">Emitter แปลว่า ผู้ปล่อย · Collector แปลว่า ผู้รวบรวม · Base แปลว่า ฐาน</p>
+    <div class="src">ที่มา: หนังสือหน้า 39–40 · คอลัมน์ "นึกภาพง่าย ๆ" และคำแปลครูเพิ่ม</div>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="สัญลักษณ์ NPN และ PNP">
+  <div class="body">
+    <h2 class="title reveal">สัญลักษณ์: ดูที่ลูกศรของขา E</h2><div class="bk">หน้า 39–40</div>
+    <div class="split" style="grid-template-columns:780px 1fr">
+      <div class="two reveal d1">
+        <div class="symc"><span data-bjt="sym" data-type="npn"></span>NPN ลูกศร<b class="up">ชี้ออก</b></div>
+        <div class="symc"><span data-bjt="sym" data-type="pnp"></span>PNP ลูกศร<b class="no">ชี้เข้า</b></div>
+      </div>
+      <div class="side">
+        <p class="frag">ขากลางที่มีแท่งขวาง = <b>B</b></p>
+        <p class="frag">ขาที่มี<b>ลูกศร</b> = <b>E</b> · ขาที่เหลือ = <b>C</b></p>
+        <p class="frag">ลูกศรชี้ทาง<b>กระแสไฟ</b>ไหลผ่านรอยต่อ B–E</p>
+        <p class="frag tipbox">จำ: <b>N</b>PN = ลูกศร<b>ไม่</b>ชี้เข้า (Not Pointing iN)</p>
+      </div>
+    </div>
+    <div class="src">ที่มา: หนังสือหน้า 39–40 รูปที่ 4.1 (ข) (ง) (วาดใหม่) · วิธีจำ Not Pointing iN เป็นวิธีจำที่ใช้กันทั่วไป ครูเพิ่ม</div>
+  </div>
+</section>
+
+<section class="slide sec-1 act" data-title="ทายชนิดจากสัญลักษณ์">
+  <div class="body">
+    <div><span class="act-badge">ทายให้ถูก</span><span class="act-meta">ทั้งห้องโหวต ข้อละ 20 วินาที</span></div>
+    <h2 class="title">สัญลักษณ์นี้เป็นชนิดไหน</h2>
+    <div class="three">
+      <div><div class="fig" style="max-width:300px;margin:0 auto"><span data-bjt="sym" data-type="pnp"></span></div>
+        <div class="vote pair" data-answer="1" style="margin-top:14px"><button type="button" class="opt">NPN</button><button type="button" class="opt">PNP</button><button type="button" class="reveal">เฉลย</button><div class="why">PNP ลูกศรชี้เข้า</div></div></div>
+      <div><div class="fig" style="max-width:300px;margin:0 auto"><span data-bjt="sym" data-type="npn" data-lbl="0"></span></div>
+        <div class="vote pair" data-answer="0" style="margin-top:14px"><button type="button" class="opt">NPN</button><button type="button" class="opt">PNP</button><button type="button" class="reveal">เฉลย</button><div class="why">NPN ลูกศรชี้ออก</div></div></div>
+      <div><div class="fig" style="max-width:300px;margin:0 auto"><span data-bjt="sym" data-type="pnp" data-lbl="0"></span></div>
+        <div class="vote pair" data-answer="1" style="margin-top:14px"><button type="button" class="opt">NPN</button><button type="button" class="opt">PNP</button><button type="button" class="reveal">เฉลย</button><div class="why">PNP ลูกศรชี้เข้าหาแท่งเบส</div></div></div>
+    </div>
+    <div class="src">ที่มา: หนังสือหน้า 39–40 · ข้อแรกเหมือนแบบทดสอบข้อ 4 หน้า 45</div>
+  </div>
+</section>
+
+<section class="slide sec-1 act" data-title="วาดสัญลักษณ์ลงสมุด">
+  <div class="body">
+    <div><span class="act-badge">ลงมือทำ</span><span class="act-meta">รายบุคคล 5 นาที · ครูสุ่มเลขที่ออกมาวาดบนกระดาน</span></div>
+    <h2 class="title">วาดลงสมุด 4 รูป แล้วเขียนชื่อขาให้ครบ</h2>
+    <div class="split" style="grid-template-columns:1fr 480px">
+      <ol class="steps sm">
+        <li>โครงสร้าง NPN (สาร 3 ก้อน) พร้อมขา C B E</li>
+        <li>สัญลักษณ์ NPN พร้อมขา C B E</li>
+        <li>โครงสร้าง PNP พร้อมขา C B E</li>
+        <li>สัญลักษณ์ PNP พร้อมขา C B E</li>
+      </ol>
+      <div class="side"><div data-timer="300"></div><div data-picker="40"></div></div>
+    </div>
+    <div class="src">ที่มา: หนังสือหน้า 38 จุดประสงค์ข้อ 2 · กิจกรรมครูเพิ่ม</div>
+  </div>
+</section>
+
+<section class="slide sec-1" data-title="ตัวถังทรานซิสเตอร์จริง">
+  <div class="body">
+    <h2 class="title reveal">ของจริงมีหลายขนาด ตามกำลังไฟที่ทนได้</h2><div class="bk">หน้า 37</div>
+    <div class="pkgs reveal d1">
+      <div><span data-bjt="pkg" data-pkg="to92"></span><p><b>TO-92</b><br>ตัวเล็ก กำลังต่ำ<br>ใช้มากในวงจรทั่วไป</p></div>
+      <div><span data-bjt="pkg" data-pkg="to220"></span><p><b>TO-220</b><br>กำลังปานกลาง<br>มีแผ่นโลหะยึดแผ่นระบายความร้อน</p></div>
+      <div><span data-bjt="pkg" data-pkg="to3"></span><p><b>TO-3</b><br>กำลังสูง ตัวถังโลหะ<br>ตัวถังเป็นขา C</p></div>
+    </div>
+    <p class="frag warn" style="margin-top:20px">ลำดับขาแต่ละรุ่น<b>ไม่เหมือนกัน</b> ห้ามเดา ต้องดูคู่มือ (datasheet) หรือวัดหาขาตามหัวข้อ 4.4</p>
+    <div class="src">ที่มา: หนังสือหน้า 37 ภาพปกบท · ชื่อตัวถังและการใช้งานเป็นความรู้เสริม <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[3]</a></sup> (ตัวอย่าง 2N3904 ตัวถัง TO-92 ขาเรียง E B C)</div>
+  </div>
+</section>
+
+<!-- ============ 4.2 ============ -->
+<section class="slide section sec-2" data-tag="4.2 คุณสมบัติทางไฟฟ้า" data-title="4.2 คุณสมบัติทางไฟฟ้า">
+  <div class="big-no">4.2</div>
+  <div class="body center">
+    <div class="label reveal">คำถามที่ 2 · หัวข้อที่ 4.2 · หนังสือหน้า 40</div>
+    <h2 class="reveal d1">คุณสมบัติทางไฟฟ้าของทรานซิสเตอร์แบบ BJT</h2>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="ตัวแปรที่ต้องรู้จัก">
+  <div class="body">
+    <h2 class="title reveal">ตัวแปรที่ใช้บ่อย: กระแส 3 ตัว แรงดัน 2 ตัว</h2><div class="bk">หน้า 40</div>
+    <div class="split" style="grid-template-columns:1fr 520px">
+      <table class="t cmp reveal d1" style="width:100%">
+        <tr><th>ตัวแปร</th><th>ความหมาย</th></tr>
+        <tr><td>I<sub>B</sub></td><td>กระแสเบส (ไหลที่ขา B)</td></tr>
+        <tr><td>I<sub>C</sub></td><td>กระแสคอลเลกเตอร์ (ไหลที่ขา C)</td></tr>
+        <tr><td>I<sub>E</sub></td><td>กระแสอิมิตเตอร์ (ไหลที่ขา E)</td></tr>
+        <tr><td>V<sub>BE</sub></td><td>แรงดันระหว่างขา B กับ E</td></tr>
+        <tr><td>V<sub>CE</sub></td><td>แรงดันระหว่างขา C กับ E</td></tr>
+      </table>
+      <div class="side">
+        <p class="frag">อักษรตัวห้อยบอกว่า<b>เป็นของขาไหน</b></p>
+        <p class="frag">2 ตัว เช่น V<sub>CE</sub> = แรงดัน<b>จาก C เทียบกับ E</b></p>
+        <p class="frag note-line">หนังสือยังมี V<sub>B</sub> V<sub>C</sub> V<sub>E</sub> คือแรงดันที่ขานั้นเทียบกับกราวด์</p>
+      </div>
+    </div>
+    <div class="src">ที่มา: หนังสือหน้า 40 พารามิเตอร์เบื้องต้น</div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="กระแสรวมที่ขา E">
+  <div class="body">
+    <h2 class="title reveal">กระแสที่ขา E = กระแสเบส + กระแสคอลเลกเตอร์</h2>
+    <div class="split" style="grid-template-columns:460px 1fr">
+      <div class="fig reveal d1"><span data-bjt="sym" data-type="npn"></span></div>
+      <div class="side">
+        <div class="fml frag">I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub></div>
+        <p class="frag">NPN: กระแสไหลเข้าทาง B และ C แล้ว<b>รวมกัน</b>ออกทาง E (ตามทิศลูกศร)</p>
+        <p class="frag">I<sub>B</sub> น้อยมาก เช่น 20 µA ส่วน I<sub>C</sub> เป็น mA จึงได้ I<sub>E</sub> ≈ I<sub>C</sub></p>
+        <p class="frag tipbox">เหมือนแม่น้ำสองสายมาบรรจบกัน น้ำที่ไหลออกเท่ากับน้ำสองสายรวมกัน</p>
+      </div>
+    </div>
+    <div class="src">ความรู้เสริม <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[2]</a></sup> หนังสือไม่ได้เขียนสูตรนี้ไว้ แต่ใช้ในแบบฝึกหัดและงานช่าง</div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="รูปที่ 4.2 IB คุม IC">
+  <div class="body">
+    <h2 class="title reveal">I<sub>B</sub> นิดเดียว คุม I<sub>C</sub> ได้มาก</h2><div class="bk">หน้า 40</div>
+    <div class="split" style="grid-template-columns:960px 1fr">
+      <div class="fig reveal d1" style="padding:6px 10px"><span data-bjt="curves" data-pt="6,20"></span></div>
+      <div class="side">
+        <p class="frag">I<sub>B</sub> เพิ่มขึ้น → I<sub>C</sub> เพิ่มขึ้น (เส้นสูงขึ้น)</p>
+        <p class="frag">I<sub>B</sub> คงที่ → V<sub>CE</sub> เปลี่ยน แต่ I<sub>C</sub> <b>เกือบคงที่</b> (เส้นเกือบแบน)</p>
+        <p class="frag">จุดส้ม: I<sub>B</sub> = 20 µA ได้ I<sub>C</sub> ≈ 2 mA <b>มากกว่าราว 100 เท่า</b></p>
+      </div>
+    </div>
+    <p class="errata frag" style="margin-top:10px"><b>หนังสือพิมพ์ผิด:</b> รูปที่ 4.2 แกนนอนเขียน V<sub>CE(sat)</sub> ที่ถูกคือ <b>V<sub>CE</sub></b> (V<sub>CE(sat)</sub> คือค่าเฉพาะตอนอิ่มตัว) · หน่วยของ I<sub>B</sub> คือ µA ส่วน I<sub>C</sub> คือ mA</p>
+    <div class="src">ที่มา: หนังสือหน้า 40 รูปที่ 4.2 (วาดใหม่ ค่าตัวเลขบนแกนเป็นตัวอย่างประกอบ β ≈ 100)</div>
+  </div>
+</section>
+
+<section class="slide sec-2 act" data-title="ลากดูกราฟ IC–VCE">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge lb">ลองเอง</span><span class="act-meta">ครูให้นักเรียนออกมาลากทีละคน</span></div>
+    <h2 class="title" style="margin-bottom:10px">ลากปรับ I<sub>B</sub> และ V<sub>CE</sub> ดูว่า I<sub>C</sub> เปลี่ยนแค่ไหน</h2>
+    <div data-bjt="family"></div>
+    <div class="src">ที่มา: หนังสือหน้า 40–42 รูปที่ 4.2 และ 4.5 · ตัวจำลองครูสร้าง ใช้ β ≈ 100</div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="อัตราขยายกระแส β">
+  <div class="body">
+    <h2 class="title reveal">อัตราขยายกระแส β (เบตา) หรือ h<sub>FE</sub></h2><div class="bk">หน้า 42</div>
+    <div class="split" style="grid-template-columns:760px 1fr">
+      <div class="reveal d1" style="text-align:center"><div class="fml">β = I<sub>C</sub> ÷ I<sub>B</sub> = h<sub>FE</sub></div>
+        <p class="note-line" style="margin-top:16px">β ไม่มีหน่วย เพราะเป็นกระแสหารกระแส</p></div>
+      <div class="side">
+        <p class="frag">β บอกว่า I<sub>C</sub> <b>มากกว่า I<sub>B</sub> กี่เท่า</b></p>
+        <p class="frag">ทรานซิสเตอร์ทั่วไป β ประมาณ <b>20–200</b> บางรุ่นถึง 300</p>
+        <p class="frag tipbox">เหมือนก๊อกน้ำ: ใช้แรงนิ้วนิดเดียว (I<sub>B</sub>) คุมน้ำไหลแรง ๆ (I<sub>C</sub>)</p>
+      </div>
+    </div>
+    <div class="src">ที่มา: หนังสือหน้า 42 สูตร β · ช่วงค่า β <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[2]</a></sup><sup class="ref"><a href="#refs">[3]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="ตัวอย่างที่ 1 หา IC">
+  <div class="body">
+    <h2 class="title reveal">ตัวอย่างที่ 1: β = 100, I<sub>B</sub> = 20 µA หา I<sub>C</sub> และ I<sub>E</sub></h2>
+    <ol class="steps sm">
+      <li class="frag">สูตร I<sub>C</sub> = β × I<sub>B</sub></li>
+      <li class="frag">แทนค่า I<sub>C</sub> = 100 × 20 µA = 2,000 µA</li>
+      <li class="frag">แปลงหน่วย 2,000 µA ÷ 1,000 = <span class="ans">I<sub>C</sub> = 2 mA</span></li>
+      <li class="frag">I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub> = 0.02 mA + 2 mA = <span class="ans">I<sub>E</sub> = 2.02 mA</span></li>
+    </ol>
+    <p class="frag tipbox">1 mA = 1,000 µA · ก่อนบวกกระแส ต้องทำให้<b>หน่วยเดียวกัน</b>ก่อน</p>
+    <div class="src">ตัวอย่างครูเพิ่ม ตามสูตรหนังสือหน้า 42</div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="ตัวอย่างที่ 2 หา β">
+  <div class="body">
+    <h2 class="title reveal">ตัวอย่างที่ 2: วัดได้ I<sub>C</sub> = 5 mA, I<sub>B</sub> = 25 µA หา β</h2>
+    <ol class="steps sm">
+      <li class="frag">สูตร β = I<sub>C</sub> ÷ I<sub>B</sub></li>
+      <li class="frag">ทำหน่วยให้เหมือนกัน: 5 mA = 5,000 µA</li>
+      <li class="frag">β = 5,000 µA ÷ 25 µA = <span class="ans">β = 200</span></li>
+    </ol>
+    <p class="frag" style="font-size:36px">แปลว่า: กระแสคอลเลกเตอร์มากกว่ากระแสเบส <b>200 เท่า</b></p>
+    <div class="src">ตัวอย่างครูเพิ่ม ตามสูตรหนังสือหน้า 42</div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="ตัวอย่างที่ 3 หา IB">
+  <div class="body">
+    <h2 class="title reveal">ตัวอย่างที่ 3: β = 150 ต้องการ I<sub>C</sub> = 3 mA ต้องจ่าย I<sub>B</sub> เท่าไร</h2>
+    <ol class="steps sm">
+      <li class="frag">ย้ายข้างสูตร: I<sub>B</sub> = I<sub>C</sub> ÷ β</li>
+      <li class="frag">I<sub>B</sub> = 3 mA ÷ 150 = 0.02 mA</li>
+      <li class="frag">แปลงหน่วย 0.02 × 1,000 = <span class="ans">I<sub>B</sub> = 20 µA</span></li>
+    </ol>
+    <p class="frag tipbox">สามเหลี่ยมช่วยจำ: I<sub>C</sub> อยู่บน · β กับ I<sub>B</sub> อยู่ล่าง ปิดตัวที่หา แล้วดูว่าเหลือคูณหรือหาร</p>
+    <div class="src">ตัวอย่างครูเพิ่ม ตามสูตรหนังสือหน้า 42</div>
+  </div>
+</section>
+
+<section class="slide sec-2 act" data-title="ลองคำนวณเอง">
+  <div class="body">
+    <div><span class="act-badge">ลงมือทำ</span><span class="act-meta">รายบุคคล 6 นาที · แล้วเทียบกับเพื่อน</span></div>
+    <h2 class="title">คำนวณ 3 ข้อ แสดงวิธีทำทีละขั้น</h2>
+    <div class="split" style="grid-template-columns:1fr 440px">
+      <ol class="steps sm">
+        <li>β = 80, I<sub>B</sub> = 50 µA หา I<sub>C</sub> <span class="frag ans">4 mA</span></li>
+        <li>I<sub>C</sub> = 12 mA, I<sub>B</sub> = 60 µA หา β <span class="frag ans">200</span></li>
+        <li>β = 120, I<sub>C</sub> = 6 mA หา I<sub>B</sub> และ I<sub>E</sub> <span class="frag ans">50 µA, 6.05 mA</span></li>
+      </ol>
+      <div class="side"><div data-timer="360"></div></div>
+    </div>
+    <div class="src">โจทย์ครูเพิ่ม · ฝึกเพิ่มได้ในแบบฝึกหัดชุดที่ 2</div>
+  </div>
+</section>
+
+<section class="slide sec-2 act" data-title="เครื่องคิด β">
+  <div class="body">
+    <div><span class="act-badge lb">ลองเอง</span><span class="act-meta">เปลี่ยน β และ I<sub>B</sub> ดูวิธีคำนวณ</span></div>
+    <h2 class="title">เปลี่ยนค่า แล้วทายก่อนว่า I<sub>C</sub> จะเป็นเท่าไร</h2>
+    <div data-bjt="beta"></div>
+    <div class="src">ตัวจำลองครูสร้าง ตามสูตรหนังสือหน้า 42</div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="รูปที่ 4.5 ช่วงการทำงาน 3 ช่วง">
+  <div class="body">
+    <h2 class="title reveal">ช่วงการทำงานของทรานซิสเตอร์ 3 ช่วง</h2><div class="bk">หน้า 42</div>
+    <div class="split" style="grid-template-columns:900px 1fr">
+      <div class="fig reveal d1" style="padding:6px 10px"><span data-bjt="regions"></span></div>
+      <div class="side" style="font-size:30px">
+        <p class="frag"><b style="color:#8a6300">1 อิ่มตัว (Saturation)</b><br>V<sub>CE</sub> ต่ำกว่า V<sub>k</sub> นำกระแสเต็มที่ เหมือน<b>สวิตช์ต่อ</b></p>
+        <p class="frag"><b style="color:var(--teal)">2 ทำงานเต็มที่ (Forward Active)</b><br>V<sub>CE</sub> อยู่ระหว่าง V<sub>k</sub> ถึงแรงดันพังทลาย I<sub>C</sub> = β × I<sub>B</sub> ใช้<b>ขยายสัญญาณ</b></p>
+        <p class="frag"><b style="color:var(--rose)">3 พังทลาย (Breakdown)</b><br>V<sub>CE</sub> สูงเกิน กระแสพุ่ง <b>ทรานซิสเตอร์เสียหาย</b></p>
+      </div>
+    </div>
+    <div class="src">ที่มา: หนังสือหน้า 42 รูปที่ 4.5 (วาดใหม่) · คำว่า "เหมือนสวิตช์ต่อ" และ "ใช้ขยายสัญญาณ" ครูเพิ่ม</div>
+  </div>
+</section>
+
+<section class="slide sec-2" data-title="แก้คำในหนังสือหน้า 42">
+  <div class="body">
+    <h2 class="title reveal">ในหนังสือหน้า 42 มีคำพิมพ์ผิด 2 จุด</h2><div class="bk">หน้า 42</div>
+    <table class="t cmp reveal d1" style="width:100%">
+      <tr><th>จุด</th><th>หนังสือเขียน</th><th>ที่ถูกคือ</th></tr>
+      <tr><td>ช่วงที่ 3</td><td>บริเวณที่ทรานซิสเตอร์<b>อิ่มตัว</b> (Breakdown)</td><td>บริเวณ<b>พังทลาย</b> (Breakdown)</td></tr>
+      <tr><td>ช่วงที่ 1</td><td>เป็นช่วงที่ทรานซิสเตอร์<b>เริ่มทำงาน</b></td><td>เป็นช่วงที่ V<sub>CE</sub> ต่ำมาก ทรานซิสเตอร์<b>นำกระแสเต็มที่</b> I<sub>C</sub> ไม่เพิ่มตาม I<sub>B</sub> แล้ว</td></tr>
+    </table>
+    <p class="frag tipbox" style="margin-top:22px">ช่วงที่ "ไม่ทำงาน" จริง ๆ คือตอน I<sub>B</sub> = 0 เรียกว่า <b>คัตออฟ (Cutoff)</b> เส้นล่างสุดของรูปที่ 4.2</p>
+    <div class="src">ที่มา: หนังสือหน้า 42 · คำแก้และเรื่องคัตออฟ <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[2]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-2 act" data-title="ทายช่วงการทำงาน">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge">ทายให้ถูก</span><span class="act-meta">ทั้งห้องตอบพร้อมกัน แล้วครูกดเฉลย</span></div>
+    <h2 class="title" style="margin-bottom:10px">จุดสีส้มอยู่ช่วงไหน</h2>
+    <div data-bjt="rquiz"></div>
+    <div class="src">ที่มา: หนังสือหน้า 42 รูปที่ 4.5 · คล้ายแบบทดสอบข้อ 5–7 หน้า 46</div>
+  </div>
+</section>
+
+<!-- ============ 4.3 ============ -->
+<section class="slide section sec-3" data-tag="4.3 การไบแอส" data-title="4.3 การไบแอส">
+  <div class="big-no">4.3</div>
+  <div class="body center">
+    <div class="label reveal">คำถามที่ 2 · หัวข้อที่ 4.3 · หนังสือหน้า 41</div>
+    <h2 class="reveal d1">การไบแอสทรานซิสเตอร์แบบ BJT</h2>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="ไบแอสคืออะไร">
+  <div class="body">
+    <h2 class="title reveal">ไบแอส (Bias) = ป้อนแรงดันให้ทรานซิสเตอร์พร้อมทำงาน</h2><div class="bk">หน้า 41</div>
+    <div class="two">
+      <div class="box reveal d1" style="padding:22px 28px;font-size:34px"><b style="color:var(--teal)">รอยต่อ B–E</b><br>ไบแอส<b>ตรง</b> (Forward Bias)<br><span class="note-line">ให้พาหะข้ามรอยต่อได้</span></div>
+      <div class="box reveal d2" style="padding:22px 28px;font-size:34px"><b style="color:var(--orange)">รอยต่อ B–C</b><br>ไบแอส<b>กลับ</b> (Reverse Bias)<br><span class="note-line">ให้ C ดึงพาหะไปรวบรวม</span></div>
+    </div>
+    <p class="frag tipbox" style="margin-top:24px">จำ: <b>BE ตรง · BC กลับ</b> = ทรานซิสเตอร์ทำงานขยายสัญญาณ</p>
+    <p class="errata frag" style="margin-top:14px"><b>หนังสือพิมพ์ผิด:</b> หน้า 41 เขียน "รีเวิสไบแอส: <b>Reward</b> Bias" ที่ถูกคือ <b>Reverse</b> Bias</p>
+    <div class="src">ที่มา: หนังสือหน้า 41</div>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="รูปที่ 4.3 ไบแอส NPN">
+  <div class="body">
+    <h2 class="title reveal">รูปที่ 4.3 การไบแอสทรานซิสเตอร์ NPN</h2><div class="bk">หน้า 41</div>
+    <div class="split" style="grid-template-columns:900px 1fr">
+      <div class="fig reveal d1 cfig"><span data-bjt="biasfig" data-type="npn"></span></div>
+      <div class="side" style="font-size:31px">
+        <p class="frag">1. V<sub>BE</sub>: ขั้ว <b>−</b> ต่อ E (n) ขั้ว <b>+</b> ต่อ B (p) → ไบแอสตรง อิเล็กตรอนจาก E วิ่งเข้าเบส</p>
+        <p class="frag">2. เบส<b>บางมาก</b> อิเล็กตรอนเกือบทั้งหมดวิ่งเลยไปถึงรอยต่อ B–C</p>
+        <p class="frag">3. V<sub>CB</sub>: ขั้ว <b>+</b> ต่อ C ดึงอิเล็กตรอนออกทาง C → เกิด I<sub>C</sub></p>
+        <p class="frag">4. ส่วนน้อยออกทาง B เป็น I<sub>B</sub></p>
+      </div>
+    </div>
+    <div class="src">ที่มา: หนังสือหน้า 41 รูปที่ 4.3 (วาดใหม่) · ข้อ 2 และ 4 อธิบายเพิ่มให้เข้าใจง่าย <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[2]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-3" data-title="รูปที่ 4.4 ไบแอส PNP">
+  <div class="body">
+    <h2 class="title reveal">รูปที่ 4.4 PNP ทำงานแบบเดียวกัน แต่กลับขั้วแหล่งจ่าย</h2><div class="bk">หน้า 41</div>
+    <div class="split" style="grid-template-columns:900px 1fr">
+      <div class="fig reveal d1 cfig"><span data-bjt="biasfig" data-type="pnp"></span></div>
+      <div class="side">
+        <p class="frag">E เป็นสาร p ต้องต่อ<b>ขั้ว +</b> จึงจะไบแอสตรง</p>
+        <p class="frag">C ต่อ<b>ขั้ว −</b> เพื่อไบแอสกลับ</p>
+        <p class="frag">พาหะที่วิ่งจาก E ไป C คือ<b>โฮล</b></p>
+        <p class="frag tipbox">NPN กับ PNP ใช้แทนกันตรง ๆ ไม่ได้ เพราะ<b>ขั้วไฟกลับกัน</b></p>
+      </div>
+    </div>
+    <div class="src">ที่มา: หนังสือหน้า 41 รูปที่ 4.4 (วาดใหม่) · เรื่องโฮลและการใช้แทนกันครูเพิ่ม</div>
+  </div>
+</section>
+
+<section class="slide sec-3 act" data-title="ลองสลับขั้วแหล่งจ่าย">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge lb">ลองเอง</span><span class="act-meta">ทายก่อนกด แล้วดูว่าตรงไหม</span></div>
+    <h2 class="title" style="margin-bottom:10px">ถ้าต่อแหล่งจ่ายผิด หรือไม่ต่อ จะเกิดอะไร</h2>
+    <div data-bjt="bias"></div>
+    <div class="src">ตัวจำลองครูสร้าง ตามหนังสือหน้า 41 รูปที่ 4.3–4.4 (ค่ากระแสเป็นตัวอย่าง β ≈ 100)</div>
+  </div>
+</section>
+
+<section class="slide sec-3 act" data-title="ตอบให้ถูก การไบแอส">
+  <div class="body">
+    <div><span class="act-badge">ทายให้ถูก</span><span class="act-meta">ทั้งห้องโหวต ข้อละ 30 วินาที</span></div>
+    <h2 class="title">จริงหรือไม่จริง</h2>
+    <div class="vrow"><div class="sit"><span class="no">1</span>NPN ทำงานขยาย: ขา E ต่อขั้วลบ ขา C ต่อขั้วบวก</div>
+      <div class="vote pair" data-answer="0"><button type="button" class="opt">จริง</button><button type="button" class="opt">ไม่จริง</button><button type="button" class="reveal">เฉลย</button>
+        <div class="why">จริง BE ไบแอสตรง BC ไบแอสกลับ</div></div></div>
+    <div class="vrow"><div class="sit"><span class="no">2</span>ถ้า B–E ไม่ได้ไบแอสตรง จะไม่มี I<sub>C</sub></div>
+      <div class="vote pair" data-answer="0"><button type="button" class="opt">จริง</button><button type="button" class="opt">ไม่จริง</button><button type="button" class="reveal">เฉลย</button>
+        <div class="why">จริง ทรานซิสเตอร์ไม่นำกระแส (คัตออฟ)</div></div></div>
+    <div class="vrow"><div class="sit"><span class="no">3</span>PNP ใช้ขั้วไฟเหมือน NPN ทุกอย่าง</div>
+      <div class="vote pair" data-answer="1"><button type="button" class="opt">จริง</button><button type="button" class="opt">ไม่จริง</button><button type="button" class="reveal">เฉลย</button>
+        <div class="why">ไม่จริง PNP ต้องกลับขั้วทั้งสองแหล่งจ่าย</div></div></div>
+    <div class="src">ที่มา: หนังสือหน้า 41</div>
+  </div>
+</section>
+
+<!-- ============ 4.4 ============ -->
+<section class="slide section sec-4" data-tag="4.4 การวัดทรานซิสเตอร์" data-title="4.4 การวัดทรานซิสเตอร์">
+  <div class="big-no">4.4</div>
+  <div class="body center">
+    <div class="label reveal">คำถามที่ 3 · หัวข้อที่ 4.4 · หนังสือหน้า 42</div>
+    <h2 class="reveal d1">การวัดทรานซิสเตอร์แบบ BJT</h2>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="วัดเพื่อรู้อะไร">
+  <div class="body">
+    <h2 class="title reveal">ใช้โอห์มมิเตอร์วัด เพื่อรู้ 3 อย่าง</h2><div class="bk">หน้า 42–44</div>
+    <div class="three reveal d1">
+      <div class="box" style="padding:24px;font-size:32px"><b style="font-size:42px;color:var(--sec)">1</b><br>ขาไหนเป็น <b>B</b><br>และเป็น <b>NPN</b> หรือ <b>PNP</b><br><span class="note-line">ขั้นที่ 1 ย่าน R×10 (รูปที่ 4.6)</span></div>
+      <div class="box" style="padding:24px;font-size:32px"><b style="font-size:42px;color:var(--sec)">2</b><br>ขาไหนเป็น <b>E</b><br>ขาไหนเป็น <b>C</b><br><span class="note-line">ขั้นที่ 2 ย่าน R×10k (รูปที่ 4.7)</span></div>
+      <div class="box" style="padding:24px;font-size:32px"><b style="font-size:42px;color:var(--sec)">3</b><br>ตัวนี้<b>ดี</b> <b>ขาด</b><br>หรือ<b>ช็อต</b><br><span class="note-line">ดูจากผลการวัดทั้งหมด</span></div>
+    </div>
+    <p class="frag warn" style="margin-top:24px">วัดทรานซิสเตอร์ที่<b>ถอดออกจากวงจร</b> และ<b>ไม่มีไฟเลี้ยง</b> เท่านั้น</p>
+    <div class="src">ที่มา: หนังสือหน้า 42–44 · ข้อควรระวังครูเพิ่ม <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[5]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="มิเตอร์เข็ม สายดำคือขั้วบวก">
+  <div class="body">
+    <h2 class="title reveal">รู้ก่อนวัด: มิเตอร์เข็มย่านโอห์ม สายดำเป็นบวก</h2><div class="bk">หน้า 42</div>
+    <div class="split" style="grid-template-columns:1fr 1fr">
+      <div class="side">
+        <p class="frag">ย่านโอห์มใช้<b>ถ่านในเครื่อง</b>ดันกระแสผ่านสิ่งที่วัด</p>
+        <p class="frag">มิเตอร์เข็มส่วนใหญ่ ต่อขั้วบวกของถ่านออกที่ขั้ว <b>−COM</b> (สายดำ)</p>
+        <p class="frag">มิเตอร์ดิจิทัลกลับกัน: <b>สายแดงเป็นบวก</b></p>
+      </div>
+      <table class="t cmp frag" style="width:100%">
+        <tr><th>ย่านโอห์ม</th><th>ไฟบวกออกที่</th></tr>
+        <tr><td>มิเตอร์เข็ม</td><td><b>สายดำ</b></td></tr>
+        <tr><td>มิเตอร์ดิจิทัล</td><td><b>สายแดง</b></td></tr>
+      </table>
+    </div>
+    <p class="frag tipbox" style="margin-top:22px">ไม่แน่ใจ? ลองวัด<b>ไดโอดที่รู้ขาแล้ว</b> ถ้าเข็มขึ้นตอนสายดำแตะขา A แปลว่าสายดำเป็นบวก</p>
+    <div class="src">ความรู้เสริม <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[4]</a></sup><sup class="ref"><a href="#refs">[5]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4 act lab" id="lab" data-title="แล็บ: สายไหนเป็นบวก">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge lb">ลองในแล็บ</span><span class="act-meta">ภารกิจที่ 1 · ทดสอบกับไดโอดที่รู้ขาแล้ว</span></div>
+    <h2 class="title" style="margin-bottom:10px">หาให้ได้ว่ามิเตอร์เข็มปล่อยไฟบวกออกสายไหน</h2><div class="bk">หน้า 42</div>
+    <div class="labframe"><iframe data-src="lab.html?m=1&amp;embed=1" title="แล็บวัดทรานซิสเตอร์ ภารกิจที่ 1"></iframe></div>
+    <a class="lablink" href="lab.html?m=1" target="_blank" rel="noopener">เปิดเต็มจอ ↗</a>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="หนังสือรูป 4.6–4.7 กับเครื่องจริง">
+  <div class="body">
+    <h2 class="title reveal">อ่านรูปที่ 4.6–4.7 ในหนังสืออย่างไร</h2><div class="bk">หน้า 43–44</div>
+    <div class="side">
+      <p class="frag">รูปในหนังสือวาดให้สายจากขั้ว <b>+</b> (สีแดง) เป็นไฟบวก ซึ่งตรงกับ<b>มิเตอร์ดิจิทัล</b></p>
+      <p class="frag">ถ้าใช้<b>มิเตอร์เข็ม</b>ของวิทยาลัย ให้<b>สลับสีสาย</b>: ตรงไหนในรูปเป็นสายแดง ให้ใช้สายดำ</p>
+      <p class="frag">หลักการไม่เปลี่ยน: <b>ไฟบวกแตะสาร P ไฟลบแตะสาร N → เข็มขึ้น</b></p>
+    </div>
+    <p class="errata frag" style="margin-top:22px"><b>ข้อควรรู้:</b> ข้อความหน้า 42 "สายที่แตะขาเบสเป็นขั้วลบ แสดงว่าเป็น PNP" ถูกเมื่อคำว่า "ขั้วลบ" หมายถึง<b>ไฟลบจริง</b> ซึ่งในมิเตอร์เข็มคือ<b>สายแดง</b> สไลด์ต่อจากนี้วาดตามมิเตอร์เข็มจริงทั้งหมด · ครูควรลองกับมิเตอร์ของวิทยาลัยก่อนสอน</p>
+    <div class="src">ที่มา: หนังสือหน้า 42–44 รูปที่ 4.6–4.7 · คำอธิบายครูเพิ่ม <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[4]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="ขั้นที่ 1 หาขาเบส">
+  <div class="body">
+    <h2 class="title reveal">ขั้นที่ 1 หาขาเบส: ย่าน R×10</h2><div class="bk">หน้า 42</div>
+    <ol class="steps sm">
+      <li class="frag">ตั้งย่าน <b>R×10</b> แตะปลายสายเข้าหากัน แล้วปรับ 0 Ω</li>
+      <li class="frag">สมมุติให้ขาหนึ่งเป็นเบส วางสายเส้นหนึ่งค้างไว้</li>
+      <li class="frag">ใช้อีกเส้นแตะอีก 2 ขาทีละขา</li>
+      <li class="frag">ถ้าเข็ม<b>ขึ้นทั้ง 2 ครั้ง</b> ขาที่ค้างไว้คือ<b>เบส</b> ถ้าไม่ใช่ ให้สลับสาย หรือย้ายไปขาอื่น</li>
+    </ol>
+    <p class="frag tipbox">เหตุผล: เบสต่อกับรอยต่อ PN ทั้งสองรอย จึงนำกระแสไปได้ทั้งขา E และขา C</p>
+    <div class="src">ที่มา: หนังสือหน้า 42 การวัดข้อ 1 · เหตุผลครูเพิ่ม</div>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="บอกชนิดจากสีสายที่แตะเบส">
+  <div class="body">
+    <h2 class="title reveal">เจอเบสแล้ว ดูว่าสายสีอะไรแตะเบสอยู่</h2><div class="bk">หน้า 42</div>
+    <table class="t cmp reveal d1" style="width:100%">
+      <tr><th>สายที่แตะเบส (มิเตอร์เข็ม)</th><th>แปลว่าเบสเป็น</th><th>ชนิด</th></tr>
+      <tr><td><b>สายดำ</b> (ไฟบวก)</td><td>สาร P</td><td><b>NPN</b></td></tr>
+      <tr><td><b>สายแดง</b> (ไฟลบ)</td><td>สาร N</td><td><b>PNP</b></td></tr>
+    </table>
+    <p class="frag tipbox" style="margin-top:22px">ถ้าใช้มิเตอร์ดิจิทัล (สายแดงเป็นบวก) ตารางนี้<b>กลับกัน</b>: สายแดงแตะเบสแล้วนำ = NPN</p>
+    <div class="src">ที่มา: หนังสือหน้า 42 · ตารางวาดตามขั้วของมิเตอร์เข็มจริง <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[4]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="รูปที่ 4.6 (ก) PNP">
+  <div class="body" style="top:100px">
+    <h2 class="title reveal" style="margin-bottom:12px">รูปที่ 4.6 (ก) ชนิด PNP: เข็มขึ้นเมื่อไร</h2><div class="bk">หน้า 43</div>
+    <div class="mt4">
+      <div class="fig frag"><span data-bjt="mtest" data-type="pnp" data-red="B" data-black="E" data-no="1"></span><p class="cap">ดำ E แดง B <span class="up">เข็มขึ้น</span></p></div>
+      <div class="fig frag"><span data-bjt="mtest" data-type="pnp" data-red="B" data-black="C" data-no="2"></span><p class="cap">ดำ C แดง B <span class="up">เข็มขึ้น</span></p></div>
+      <div class="fig frag"><span data-bjt="mtest" data-type="pnp" data-red="E" data-black="B" data-no="3"></span><p class="cap">ดำ B แดง E <span class="no">ไม่ขึ้น</span></p></div>
+      <div class="fig frag"><span data-bjt="mtest" data-type="pnp" data-red="C" data-black="B" data-no="4"></span><p class="cap">ดำ B แดง C <span class="no">ไม่ขึ้น</span></p></div>
+    </div>
+    <p class="frag note-line" style="margin-top:12px">สายแดง (ไฟลบ) แตะเบสแล้วเข็มขึ้นทั้งสองขา → เบสเป็น N → <b>PNP</b></p>
+    <div class="src">ที่มา: หนังสือหน้า 43 รูปที่ 4.6 (ก) วาดใหม่ตามขั้วมิเตอร์เข็มจริง (สายดำ = บวก)</div>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="รูปที่ 4.6 (ข) NPN">
+  <div class="body" style="top:100px">
+    <h2 class="title reveal" style="margin-bottom:12px">รูปที่ 4.6 (ข) ชนิด NPN: เข็มขึ้นเมื่อไร</h2><div class="bk">หน้า 43</div>
+    <div class="mt4">
+      <div class="fig frag"><span data-bjt="mtest" data-type="npn" data-red="E" data-black="B" data-no="1"></span><p class="cap">ดำ B แดง E <span class="up">เข็มขึ้น</span></p></div>
+      <div class="fig frag"><span data-bjt="mtest" data-type="npn" data-red="C" data-black="B" data-no="2"></span><p class="cap">ดำ B แดง C <span class="up">เข็มขึ้น</span></p></div>
+      <div class="fig frag"><span data-bjt="mtest" data-type="npn" data-red="B" data-black="E" data-no="3"></span><p class="cap">ดำ E แดง B <span class="no">ไม่ขึ้น</span></p></div>
+      <div class="fig frag"><span data-bjt="mtest" data-type="npn" data-red="B" data-black="C" data-no="4"></span><p class="cap">ดำ C แดง B <span class="no">ไม่ขึ้น</span></p></div>
+    </div>
+    <p class="frag note-line" style="margin-top:12px">สายดำ (ไฟบวก) แตะเบสแล้วเข็มขึ้นทั้งสองขา → เบสเป็น P → <b>NPN</b></p>
+    <div class="src">ที่มา: หนังสือหน้า 43 รูปที่ 4.6 (ข) วาดใหม่ตามขั้วมิเตอร์เข็มจริง (สายดำ = บวก)</div>
+  </div>
+</section>
+
+<section class="slide sec-4 act lab" data-title="แล็บ: หาขาเบส ตัวที่ 1">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge lb">ลองในแล็บ</span><span class="act-meta">ภารกิจที่ 2 · ขาสุ่มใหม่ทุกครั้งที่เริ่ม</span></div>
+    <h2 class="title" style="margin-bottom:10px">หาขาเบสและชนิดของ Q1</h2><div class="bk">หน้า 42–43</div>
+    <div class="labframe"><iframe data-src="lab.html?m=2&amp;embed=1" title="แล็บวัดทรานซิสเตอร์ ภารกิจที่ 2"></iframe></div>
+    <a class="lablink" href="lab.html?m=2" target="_blank" rel="noopener">เปิดเต็มจอ ↗</a>
+  </div>
+</section>
+
+<section class="slide sec-4 act lab" data-title="แล็บ: หาขาเบส ตัวที่ 2">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge lb">ลองในแล็บ</span><span class="act-meta">ภารกิจที่ 3 · ตัวนี้อาจไม่ใช่ชนิดเดียวกับตัวที่แล้ว</span></div>
+    <h2 class="title" style="margin-bottom:10px">หาขาเบสและชนิดของ Q2</h2><div class="bk">หน้า 42–43</div>
+    <div class="labframe"><iframe data-src="lab.html?m=3&amp;embed=1" title="แล็บวัดทรานซิสเตอร์ ภารกิจที่ 3"></iframe></div>
+    <a class="lablink" href="lab.html?m=3" target="_blank" rel="noopener">เปิดเต็มจอ ↗</a>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="ขั้นที่ 2 หาขา E และ C">
+  <div class="body">
+    <h2 class="title reveal">ขั้นที่ 2 หาขา E และ C: ย่าน R×10k</h2><div class="bk">หน้า 43</div>
+    <ol class="steps sm">
+      <li class="frag">ตั้งย่าน <b>R×10k</b> (ใช้ถ่าน 9 V ในเครื่อง) แล้วปรับ 0 Ω ใหม่</li>
+      <li class="frag">แตะสองขาที่<b>ไม่ใช่เบส</b> ดูเข็ม แล้ว<b>สลับสาย</b>แตะอีกครั้ง</li>
+      <li class="frag">ครั้งหนึ่งเข็ม<b>ขยับขึ้นเล็กน้อย</b> อีกครั้งเข็ม<b>ไม่ขึ้นเลย</b></li>
+      <li class="frag">ดูครั้งที่เข็มขยับ: <b>NPN</b> ขาที่สายดำแตะคือ <b>E</b> · <b>PNP</b> ขาที่สายแดงแตะคือ <b>E</b></li>
+    </ol>
+    <p class="frag tipbox">ทำไมขยับ: รอยต่อ B–E ทนแรงดันย้อนกลับได้แค่ราว 6 V แต่ B–C ทนได้ 60 V ถ่าน 9 V จึงดันกระแสผ่านได้ทางเดียว</p>
+    <div class="src">ที่มา: หนังสือหน้า 43 การวัดข้อ 2 · เหตุผลและค่าแรงดัน <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[3]</a></sup> (2N3904: V<sub>(BR)EBO</sub> ≥ 6 V, V<sub>(BR)CBO</sub> ≥ 60 V)</div>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="รูปที่ 4.7">
+  <div class="body" style="top:100px">
+    <h2 class="title reveal" style="margin-bottom:12px">รูปที่ 4.7 หาขา E และ C (มิเตอร์เข็ม R×10k)</h2><div class="bk">หน้า 44</div>
+    <div class="mt4">
+      <div class="fig frag"><span data-bjt="mtest" data-type="pnp" data-red="E" data-black="C" data-range="x10k" data-no="5"></span><p class="cap">PNP ดำ C แดง E <span class="up">ขยับเล็กน้อย</span></p></div>
+      <div class="fig frag"><span data-bjt="mtest" data-type="pnp" data-red="C" data-black="E" data-range="x10k" data-no="6"></span><p class="cap">PNP ดำ E แดง C <span class="no">ไม่ขึ้น</span></p></div>
+      <div class="fig frag"><span data-bjt="mtest" data-type="npn" data-red="E" data-black="C" data-range="x10k" data-no="7"></span><p class="cap">NPN ดำ C แดง E <span class="no">ไม่ขึ้น</span></p></div>
+      <div class="fig frag"><span data-bjt="mtest" data-type="npn" data-red="C" data-black="E" data-range="x10k" data-no="8"></span><p class="cap">NPN ดำ E แดง C <span class="up">ขยับเล็กน้อย</span></p></div>
+    </div>
+    <p class="frag note-line" style="margin-top:12px">บางรุ่นรอยต่อ B–E ทนเกิน 9 V เข็มอาจไม่ขยับทั้งสองครั้ง ให้ใช้วิธีมิเตอร์ดิจิทัลหรือดูคู่มือแทน</p>
+    <div class="src">ที่มา: หนังสือหน้า 44 รูปที่ 4.7 วาดใหม่ตามขั้วมิเตอร์เข็มจริง · หมายเหตุครูเพิ่ม</div>
+  </div>
+</section>
+
+<section class="slide sec-4 act lab" data-title="แล็บ: หาขา E และ C">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge lb">ลองในแล็บ</span><span class="act-meta">ภารกิจที่ 4 · รู้ขาเบสแล้ว หาอีกสองขา</span></div>
+    <h2 class="title" style="margin-bottom:10px">ใช้ย่าน R×10k หาว่าขาไหนเป็น E</h2><div class="bk">หน้า 43–44</div>
+    <div class="labframe"><iframe data-src="lab.html?m=4&amp;embed=1" title="แล็บวัดทรานซิสเตอร์ ภารกิจที่ 4"></iframe></div>
+    <a class="lablink" href="lab.html?m=4" target="_blank" rel="noopener">เปิดเต็มจอ ↗</a>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="ตัวดี ตัวขาด ตัวช็อต">
+  <div class="body">
+    <h2 class="title reveal">ดูผลวัด แล้วบอกว่าดีหรือเสีย</h2><div class="bk">หน้า 46</div>
+    <table class="t cmp reveal d1" style="width:100%">
+      <tr><th>สภาพ</th><th>ผลการวัด (R×10)</th></tr>
+      <tr><td><span class="up">ดี</span></td><td>B–E และ B–C เข็มขึ้น<b>ทางเดียว</b> · C–E ไม่ขึ้นทั้งสองทาง</td></tr>
+      <tr><td><span class="no">ขาด</span></td><td>คู่ขาที่ควรนำ เข็ม<b>ไม่ขึ้นเลย</b>ทั้งสองทาง</td></tr>
+      <tr><td><span class="no">ช็อต</span></td><td>เข็มขึ้น<b>เต็มสเกลทั้งสองทาง</b> (สลับสายแล้วได้ค่าเท่ากัน) มักเป็นที่ C–E</td></tr>
+    </table>
+    <p class="frag tipbox" style="margin-top:22px">แบบทดสอบข้อ 10 หน้า 46: สลับสายแล้วได้ค่าความต้านทาน<b>เท่ากัน</b> → คิดว่าเป็นอาการแบบไหน</p>
+    <div class="src">ที่มา: หนังสือหน้า 46 ข้อ 10 · ตารางสรุปครูเพิ่ม <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[5]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4 act lab" data-title="แล็บ: ตัวไหนดี ตัวไหนเสีย">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge lb">ลองในแล็บ</span><span class="act-meta">ภารกิจที่ 5 · 3 ตัว มีตัวดี ตัวขาด ตัวช็อต</span></div>
+    <h2 class="title" style="margin-bottom:10px">วัดทั้ง 3 ตัว แล้วบอกสภาพ</h2><div class="bk">หน้า 42–46</div>
+    <div class="labframe"><iframe data-src="lab.html?m=5&amp;embed=1" title="แล็บวัดทรานซิสเตอร์ ภารกิจที่ 5"></iframe></div>
+    <a class="lablink" href="lab.html?m=5" target="_blank" rel="noopener">เปิดเต็มจอ ↗</a>
+  </div>
+</section>
+
+<section class="slide sec-4" data-title="วัดด้วยมิเตอร์ดิจิทัล">
+  <div class="body">
+    <h2 class="title reveal">ถ้ามีมิเตอร์ดิจิทัล วัดได้อีก 2 แบบ</h2>
+    <div class="two">
+      <div class="box reveal d1" style="padding:22px 28px;font-size:30px;line-height:1.45"><b style="font-size:36px;color:var(--teal)">ย่านไดโอด (→|)</b><br>
+        สายแดงแตะเบส (NPN) จอแสดงแรงดันตกคร่อมรอยต่อ ราว <b>0.6–0.7 V</b><br>
+        B–E อ่านได้<b>สูงกว่า</b> B–C เล็กน้อย → ใช้แยกขา E กับ C ได้<br>
+        ไบแอสกลับ จอขึ้น <b>1</b> (เกินย่าน)</div>
+      <div class="box reveal d2" style="padding:22px 28px;font-size:30px;line-height:1.45"><b style="font-size:36px;color:var(--teal)">ช่อง hFE</b><br>
+        เสียบขาให้ตรงช่อง E B C ของแถว NPN หรือ PNP<br>
+        จออ่านค่า <b>β (h<sub>FE</sub>)</b> ได้เลย เช่น 2N3904 ราว 100–300<br>
+        ตัวเลขต่ำมาก = เสียบกลับด้าน หรือผิดแถว</div>
+    </div>
+    <div class="src">ความรู้เสริม <span class="extra">เสริม</span><sup class="ref"><a href="#refs">[3]</a></sup><sup class="ref"><a href="#refs">[6]</a></sup> หนังสือพูดถึง h<sub>FE</sub> ในหน้า 42 แต่ไม่ได้สอนวิธีวัดด้วยมิเตอร์ดิจิทัล</div>
+  </div>
+</section>
+
+<section class="slide sec-4 act lab" data-title="แล็บ: มิเตอร์ดิจิทัล ย่านไดโอด">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge lb">ลองในแล็บ</span><span class="act-meta">ภารกิจที่ 6 · สังเกตว่าสายแดงเป็นบวก</span></div>
+    <h2 class="title" style="margin-bottom:10px">อ่านแรงดันรอยต่อ B–E และ B–C</h2>
+    <div class="labframe"><iframe data-src="lab.html?m=6&amp;embed=1" title="แล็บวัดทรานซิสเตอร์ ภารกิจที่ 6"></iframe></div>
+    <a class="lablink" href="lab.html?m=6" target="_blank" rel="noopener">เปิดเต็มจอ ↗</a>
+  </div>
+</section>
+
+<section class="slide sec-4 act lab" data-title="แล็บ: วัดค่า hFE">
+  <div class="body" style="top:96px">
+    <div><span class="act-badge lb">ลองในแล็บ</span><span class="act-meta">ภารกิจที่ 7 · แล้วใช้ β คำนวณ I<sub>C</sub></span></div>
+    <h2 class="title" style="margin-bottom:10px">เสียบช่อง hFE ให้ถูกด้าน แล้วอ่านค่า β</h2>
+    <div class="labframe"><iframe data-src="lab.html?m=7&amp;embed=1" title="แล็บวัดทรานซิสเตอร์ ภารกิจที่ 7"></iframe></div>
+    <a class="lablink" href="lab.html?m=7" target="_blank" rel="noopener">เปิดเต็มจอ ↗</a>
+  </div>
+</section>
+
+<section class="slide sec-4 act watch" data-title="คลิป วัดขาทรานซิสเตอร์ด้วยมิเตอร์เข็ม">
+  <div class="body">
+    <div><span class="act-badge vd">ดูคลิป</span><span class="act-meta">ครูเลือกช่วงที่ต้องการ ประมาณ 5–8 นาที</span></div>
+    <h2 class="title">ครูช่างสาธิตการวัดขา BJT ด้วยมิเตอร์เข็ม</h2>
+    <div class="row" style="gap:36px">
+      <div style="flex:0 0 1000px"><div data-video="BGOQ5pocX0w" data-title="การวัดขาทรานซิสเตอร์ BJT ดีเสียและทราบชนิดในคลิปเดียว" data-credit="กรูเจียงครูช่าง" data-len="18:48"></div></div>
+      <div class="side">
+        <div class="qbox"><h3>ดูแล้วตอบ</h3><ol>
+          <li>หาขาเบสได้อย่างไร เข็มเป็นแบบไหน</li>
+          <li>ขา E กับขา C เข็มต่างกันอย่างไร</li>
+          <li>แบบไหนแปลว่าตัวเสีย</li>
+        </ol></div>
+      </div>
+    </div>
+    <div class="src">วิดีโอ: กรูเจียงครูช่าง <sup class="ref"><a href="#videos">[V1]</a></sup></div>
+  </div>
+</section>
+
+<section class="slide sec-4 act watch" data-title="คลิป วัดด้วยมิเตอร์ดิจิทัล">
+  <div class="body">
+    <div><span class="act-badge vd">ดูคลิป</span><span class="act-meta">1 นาที</span></div>
+    <h2 class="title">วัดทรานซิสเตอร์ด้วยมิเตอร์ดิจิทัล ย่านไดโอด</h2>
+    <div class="row" style="gap:36px">
+      <div style="flex:0 0 1000px"><div data-video="3O-g3xFofww" data-title="วิธีวัดทรานซิสเตอร์ ด้วย มิเตอร์ แบบ ดิจิตอล" data-credit="Zim Zim DIY" data-len="0:59"></div></div>
+      <div class="side">
+        <div class="qbox"><h3>ดูแล้วตอบ</h3><ol>
+          <li>ตั้งย่านอะไร</li>
+          <li>จอแสดงค่าประมาณเท่าไรเมื่อรอยต่อนำกระแส</li>
+        </ol></div>
+      </div>
+    </div>
+    <div class="src">วิดีโอ: Zim Zim DIY <sup class="ref"><a href="#videos">[V2]</a></sup></div>
+  </div>
+</section>
+
+<!-- ============ ลงมือวัด / สรุป ============ -->
+<section class="slide sec-0" data-tag="บทสรุป" data-title="บทสรุป">
+  <div class="body">
+    <h2 class="title reveal">บทสรุป</h2>
+    <ol class="steps sm">
+      <li class="frag">BJT มี 2 ชนิด <b>NPN</b> และ <b>PNP</b> มี 3 ขา <b>E B C</b> · NPN ลูกศรชี้ออก PNP ลูกศรชี้เข้า</li>
+      <li class="frag">I<sub>B</sub> น้อย ๆ คุม I<sub>C</sub> ได้มาก: <b>β = I<sub>C</sub> ÷ I<sub>B</sub></b> และ I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub></li>
+      <li class="frag">ช่วงการทำงาน 3 ช่วง: <b>อิ่มตัว · ทำงานเต็มที่ · พังทลาย</b></li>
+      <li class="frag">ทำงานขยาย: <b>B–E ไบแอสตรง · B–C ไบแอสกลับ</b></li>
+      <li class="frag">วัด: R×10 หา<b>เบส+ชนิด</b> · R×10k หา <b>E/C</b> · มิเตอร์เข็มย่านโอห์ม <b>สายดำ = บวก</b></li>
+    </ol>
+    <div class="src">ที่มา: สรุปจากหนังสือหน้า 39–44</div>
+  </div>
+</section>
+
+<section class="slide sec-0 act" data-title="ลงมือวัดตัวจริง">
+  <div class="body">
+    <div><span class="act-badge">ลงมือทำ</span><span class="act-meta">กลุ่มละ 3–4 คน · ครูเดินตรวจทุกกลุ่ม</span></div>
+    <h2 class="title">วัดทรานซิสเตอร์จริง แล้วกรอกใบบันทึกผล</h2>
+    <div class="split" style="grid-template-columns:1fr 520px">
+      <ol class="steps sm">
+        <li>ครูแจกทรานซิสเตอร์กลุ่มละ 3 ตัว (ปิดเบอร์ไว้)</li>
+        <li>ใช้มิเตอร์เข็ม: หาขาเบส ชนิด ขา E และ C</li>
+        <li>บอกสภาพ ดี/ขาด/ช็อต แล้วเปิดเบอร์ เทียบกับคู่มือ</li>
+        <li>ไม่มีอุปกรณ์จริง: ใช้<a href="lab.html?m=0">แล็บโหมดอิสระ</a> สุ่มชุดทรานซิสเตอร์แทน</li>
+      </ol>
+      <div class="side" style="align-items:center"><div data-timer="3600"></div></div>
+    </div>
+    <p class="frag warn" style="margin-top:6px">วัดเฉพาะตัวที่ไม่มีไฟเลี้ยง · เสร็จแล้วหมุนมิเตอร์ไป OFF ทุกครั้ง (ถ่านในเครื่องจะได้ไม่หมด)</p>
+    <div class="src">กิจกรรมครูเพิ่ม (หนังสือบทนี้ไม่มีใบปฏิบัติงาน) · ใบบันทึกผลอยู่ท้ายหน้า <a href="exercises.html">แบบฝึกหัด</a></div>
+  </div>
+</section>
+
+<section class="slide sec-0 act" data-title="แบบทดสอบหลังเรียน">
+  <div class="body center" style="text-align:center">
+    <div><span class="act-badge">แบบทดสอบหลังเรียน</span><span class="act-meta">รายบุคคล · 10 นาที</span></div>
+    <h2 class="title" style="padding-right:0">ชุดเดิม 10 ข้อ ลองดูว่าทำได้มากขึ้นไหม</h2>
+    <p>เปิด <b>แบบทดสอบ</b> เลือก "<b>หลังเรียน</b>" กดส่ง แล้วพิมพ์ใบคะแนนส่ง Classroom</p>
+    <p class="small">จากนั้นทำเครื่องหมาย × ลงหนังสือหน้า 45–46 ด้วย</p>
+    <div style="margin-top:20px"><div data-timer="600"></div></div>
+  </div>
+</section>
+
+<section class="slide sec-0" data-title="งานต่อจากคาบนี้">
+  <div class="body center">
+    <h2 class="title reveal" style="padding-right:0">งานต่อจากคาบนี้</h2>
+    <ul class="pts reveal d1">
+      <li><a href="exercises.html">แบบฝึกหัด</a> ชุดที่ 1–4 ทำแล้วพิมพ์ใบคะแนนส่ง</li>
+      <li>ชุดที่ 5 เขียนอธิบาย 3 ข้อ และใบบันทึกผลการวัด ส่งครูในคาบ</li>
+      <li>ฝึกต่อใน <a href="lab.html?m=0">แล็บวัดทรานซิสเตอร์</a> โหมดอิสระจนหาขาได้ภายใน 1 นาที</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide sec-0" id="refs" data-tag="เอกสารอ้างอิง" data-title="เอกสารอ้างอิง">
+  <div class="body" style="top:112px;font-size:26px;line-height:1.42">
+    <h2 class="title" style="font-size:52px;margin-bottom:12px">เอกสารอ้างอิง</h2>
+    <ol style="margin:0;padding-left:56px">
+      <li style="margin-bottom:8px">หนังสือเรียนวิชาอุปกรณ์อิเล็กทรอนิกส์และวงจร (20127-2004) บทเรียนที่ 4 ทรานซิสเตอร์แบบ BJT หน้า 37–46 (หนังสือที่วิทยาลัยจัดให้นักเรียน)</li>
+      <li style="margin-bottom:8px">Electronics Tutorials. <i>Bipolar Transistor</i>. https://www.electronics-tutorials.ws/transistor/tran_1.html (I<sub>E</sub> = I<sub>C</sub> + I<sub>B</sub>, β ทั่วไป 20–200)</li>
+      <li style="margin-bottom:8px">onsemi. (2021). <i>2N3903, 2N3904 General Purpose Transistors</i> (Datasheet Rev. 9). https://www.onsemi.com/pdf/datasheet/2n3903-d.pdf (ตัวถัง TO-92 ขา E B C, V<sub>(BR)EBO</sub> ≥ 6 V, V<sub>(BR)CBO</sub> ≥ 60 V, h<sub>FE</sub> 100–300)</li>
+      <li style="margin-bottom:8px">Learnabout Electronics. <i>Diode Testing</i>. https://learnabout-electronics.org/Semiconductors/diodes_28.php (มิเตอร์เข็มย่านโอห์ม สายดำเป็นบวก)</li>
+      <li style="margin-bottom:8px">All About Circuits. <i>Meter Check of a Diode</i>. https://www.allaboutcircuits.com/textbook/semiconductors/chpt-3/meter-check-of-a-diode/</li>
+      <li style="margin-bottom:8px">Electronic Lovers. <i>Determine BJT Transistor Pinouts Using a Digital Multimeter</i>. Hackster.io. https://www.hackster.io/electroniclovers/determine-bjt-transistor-pinouts-using-a-digital-multimeter-52f83c (V<sub>BE</sub> สูงกว่า V<sub>BC</sub> เล็กน้อย)</li>
+    </ol>
+    <p class="tiny" style="margin-top:12px">ภาพสัญลักษณ์ โครงสร้าง กราฟ มิเตอร์ และตัวถังทั้งหมดวาดขึ้นใหม่เพื่อการสอน ไม่ใช่ภาพจากหนังสือ · กราฟและตัวจำลองใช้ค่าตัวอย่าง β ≈ 100 · ข้อความที่ระบุว่า "ครูเพิ่ม" เป็นตัวอย่างหรือคำอธิบายเสริม</p>
+  </div>
+</section>
+
+<section class="slide sec-0" id="videos" data-title="วิดีโอประกอบการสอน">
+  <div class="body" style="top:112px;font-size:27px;line-height:1.45">
+    <h2 class="title" style="font-size:52px;margin-bottom:12px">วิดีโอประกอบการสอน (YouTube)</h2>
+    <ol style="margin:0;padding-left:0;list-style:none">
+      <li style="margin-bottom:10px"><b>[V1]</b> กรูเจียงครูช่าง. (2565). <i>การวัดขาทรานซิสเตอร์ BJT ดีเสียและทราบชนิดในคลิปเดียว</i>. https://www.youtube.com/watch?v=BGOQ5pocX0w</li>
+      <li style="margin-bottom:10px"><b>[V2]</b> Zim Zim DIY. (2565). <i>วิธีวัดทรานซิสเตอร์ ด้วย มิเตอร์ แบบ ดิจิตอล</i>. https://www.youtube.com/watch?v=3O-g3xFofww</li>
+    </ol>
+    <p class="tiny" style="margin-top:16px">ฝังจากช่องผู้เผยแพร่โดยตรง ไม่ได้ดาวน์โหลดหรือตัดต่อ · ตรวจว่ายังเปิดดูได้และอนุญาตให้ฝังเมื่อ 16 พฤศจิกายน 2569 · ครูควรดูก่อนสอนทุกครั้ง เพราะคลิปอาจถูกลบหรือย้าย</p>
+  </div>
+</section>
+
+</main>
+</div>
+<script src="bjt.js"></script>
+<script src="../assets/js/sims.js"></script>
+<script src="../assets/js/deck.js"></script>
+<script>
+/* แล็บเสมือน: โหลดเฉพาะสไลด์ที่กำลังแสดง ออกจากสไลด์แล้วปิด เพื่อไม่ให้เครื่องช้า */
+(function () {
+    const sync = sl => {
+        const f = sl.querySelector('.labframe iframe'); if (!f) return;
+        if (sl.classList.contains('active')) { if (!f.getAttribute('src')) f.setAttribute('src', f.dataset.src); }
+        else if (f.getAttribute('src')) f.removeAttribute('src');
+    };
+    const mo = new MutationObserver(ms => ms.forEach(m => sync(m.target)));
+    document.querySelectorAll('.slide.lab').forEach(sl => { mo.observe(sl, { attributes: true, attributeFilter: ['class'] }); sync(sl); });
+})();
+</script>
+</body>
+</html>

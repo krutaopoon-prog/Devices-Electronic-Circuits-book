@@ -1,0 +1,10 @@
+/* ภาพเครื่องวัดบทที่ 2 (คู่กับ meters.js) */
+[data-meter] { display: block; }
+.mt-svg { display: block; width: 100%; height: auto; }
+.mt-wave { max-width: 320px; }
+
+/* แถบเน้นแถวสเกลที่ต้องอ่าน (ใช้ในห้องแล็บ: ใส่คลาส hl-10 / hl-50 / hl-250 / hl-ac10 / hl-ohm ที่ตัวครอบ) */
+.hl-10 .mt-band.b-10, .hl-50 .mt-band.b-50, .hl-250 .mt-band.b-250,
+.hl-ac10 .mt-band.b-ac10, .hl-ohm .mt-band.b-ohm { opacity: .45; }
+.hl-10 .mt-row.r-10 text, .hl-50 .mt-row.r-50 text, .hl-250 .mt-row.r-250 text, .hl-ac10 .mt-row.r-ac10 text { fill: #b4380e; font-weight: 700; }
+.led-on .mt-led { fill: #ff3b30; filter: drop-shadow(0 0 6px #ff3b30); }
